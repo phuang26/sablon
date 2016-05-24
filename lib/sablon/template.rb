@@ -5,6 +5,7 @@ require 'sablon/processor/section_properties'
 module Sablon
   # Creates a template from an MS Word doc that can be easily manipulated
   class Template
+    SYMBOL_FOR_IMAGES = :images
     attr_reader :document
 
     class << self
@@ -61,6 +62,7 @@ module Sablon
       process(env)
       #
       Zip::OutputStream.write_buffer(StringIO.new) do |out|
+        Sablon::Processor::Image.add_images_to_zip!(properties[SYMBOL_FOR_IMAGES], out)
         generate_output_file(out, @document.zip_contents)
       end
     end
@@ -119,4 +121,5 @@ module Sablon
   Template.register_processor(%r{word/document.xml}, Sablon::Processor::Document)
   Template.register_processor(%r{word/document.xml}, Sablon::Processor::SectionProperties)
   Template.register_processor(%r{word/(?:header|footer)\d*\.xml}, Sablon::Processor::Document)
+  Template.register_processor(%r{word/_rels/document.xml.rels}, Sablon::Processor::Image)
 end

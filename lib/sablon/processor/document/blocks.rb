@@ -88,13 +88,22 @@ module Sablon
 
       class ImageBlock < Block
         def self.encloses?(start_field, end_field)
-          start_field.expression.start_with?('@')
+          start_field.expression =~ /^@/
         end
 
         def replace(image)
           # we need to include the start and end nodes incase the image is
           # inline with the merge fields
           nodes = [start_node] + body + [end_node]
+
+          ## Complat
+          name = content.first.name
+          pic_prop = self.class.parent(start_field).at_xpath('.//pic:cNvPr', pic: Sablon::Processor::Image::PICTURE_NS_URI)
+          pic_prop.attributes['name'].value = name
+          blip = self.class.parent(start_field).at_xpath('.//a:blip', a: Sablon::Processor::Image::MAIN_NS_URI)
+          new_rid = Sablon::Processor::Image.list_ids[name.match(/(.*)\.[^.]+$/)[1]]
+          blip.attributes['embed'].value = "rId#{new_rid}"
+
           #
           if image
             nodes.each do |node|
