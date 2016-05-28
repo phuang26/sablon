@@ -62,7 +62,7 @@ module Sablon
       process(env)
       #
       Zip::OutputStream.write_buffer(StringIO.new) do |out|
-        Sablon::Processor::Image.add_images_to_zip!(properties[SYMBOL_FOR_IMAGES], out)
+        Sablon::Processor::Image.add_images_to_zip!(context, out)
         generate_output_file(out, @document.zip_contents)
       end
     end
