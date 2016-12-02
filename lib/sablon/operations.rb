@@ -151,6 +151,13 @@ module Sablon
         image.local_rid = image.rid_by_file[env.document.current_entry]
       end
     end
+
+    class Chem < Struct.new(:chem_reference, :block)
+      def evaluate(context)
+        chem = chem_reference.evaluate(context)
+        block.replace([chem])
+      end
+    end
   end
 
   module Expression
