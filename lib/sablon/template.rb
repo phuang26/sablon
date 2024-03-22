@@ -1,6 +1,7 @@
 require 'sablon/document_object_model/model'
 require 'sablon/processor/document'
 require 'sablon/processor/section_properties'
+require 'sablon/processor/image'
 
 module Sablon
   # Creates a template from an MS Word doc that can be easily manipulated

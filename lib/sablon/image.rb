@@ -2,10 +2,11 @@ module Sablon
   class Image
     include Singleton
     attr_reader :definitions
+    attr_reader :rid_by_file
 
-    Definition = Struct.new(:name, :data, :rid) do
+    Definition = Struct.new(:name, :data, :width, :height, :rid) do
       def inspect
-        "#<Image #{name}:#{data}:#{rid}"
+        "#<Image #{name}:#{data}:#{width}:#{height}:#{rid}"
       end
     end
 
